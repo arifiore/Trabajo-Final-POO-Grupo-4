@@ -3,6 +3,7 @@ package dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
 import businessEntity.Asistencia;
 
 public class AsistenciaDAO implements IBaseDAO<Asistencia>{
@@ -35,7 +36,7 @@ public class AsistenciaDAO implements IBaseDAO<Asistencia>{
             ps.setTimestamp(3, Timestamp.valueOf(asistencia.getFechaHora()));
             ps.setString(4, asistencia.getEstado());
             ps.setString(5, asistencia.getJustificacion());
-            ps.setInt(7, asistencia.getIdAsistencia());
+            ps.setInt(6, asistencia.getIdAsistencia());
             int filas = ps.executeUpdate();
             return filas > 0;
         }
@@ -93,5 +94,26 @@ public class AsistenciaDAO implements IBaseDAO<Asistencia>{
             }
         }
         return lista;
+    }
+
+    public List<Asistencia> obtenerPorEmpleado(int idEmpleado) throws Exception {
+    List<Asistencia> lista = new ArrayList<>();
+    String sql = "SELECT * FROM asistencia WHERE id_empleado = ? ORDER BY fecha_hora ASC";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, idEmpleado);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Asistencia a = new Asistencia();
+                a.setIdAsistencia(rs.getInt("id_asistencia"));
+                a.setIdEmpleado(rs.getInt("id_empleado"));
+                a.setIdHorario(rs.getInt("id_horario"));
+                a.setFechaHora(rs.getTimestamp("fecha_hora").toLocalDateTime());
+                a.setEstado(rs.getString("estado"));
+                a.setJustificacion(rs.getString("justificacion"));
+                lista.add(a);
+            }
+        }
+    }
+    return lista;
     }
 }

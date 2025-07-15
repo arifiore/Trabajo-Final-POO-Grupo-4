@@ -20,8 +20,7 @@ public class UsuarioDAO implements IBaseDAO<Usuario>{
             ps.setString(2, usuario.getUsername());
             ps.setString(3, usuario.getPassword());
             ps.setBoolean(4, usuario.isEstado());
-            int filas = ps.executeUpdate();
-            return filas > 0;
+            return ps.executeUpdate() > 0;
         }
     }
 
@@ -89,5 +88,23 @@ public class UsuarioDAO implements IBaseDAO<Usuario>{
             }
         }
         return lista;
+    }
+    public Usuario obtenerPorUsername(String username) throws SQLException {
+        String sql = "SELECT * FROM usuario WHERE username = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Usuario usuario = new Usuario();
+                    usuario.setIdUsuario(rs.getInt("id_usuario"));
+                    usuario.setIdEmpleado(rs.getInt("id_empleado")); 
+                    usuario.setUsername(rs.getString("username"));
+                    usuario.setPassword(rs.getString("password"));
+                    usuario.setEstado(rs.getBoolean("estado")); 
+                    return usuario;
+                }
+            }
+        }
+        return null;
     }
 }
