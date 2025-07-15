@@ -8,6 +8,7 @@ public class Empleado {
     private String cargo;
     private String area;
     private boolean estado;
+    private boolean esLider;
 
     public Empleado() {}
 
@@ -66,4 +67,13 @@ public class Empleado {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+
+    public boolean isEsLider() {
+        return esLider;
+    }
+
+    public void setEsLider(boolean esLider) {
+        this.esLider = esLider;
+    }   
+    
 }

@@ -8,7 +8,8 @@ CREATE TABLE Empleado (
     apellidos VARCHAR(100) NOT NULL,
     cargo VARCHAR(50) NOT NULL,
     area VARCHAR(50) NOT NULL,
-    estado BOOLEAN DEFAULT TRUE
+    estado BOOLEAN DEFAULT TRUE,
+    es_lider BOOLEAN DEFAULT FALSE
 );
 
 -- Tabla Turno
